@@ -1,17 +1,25 @@
-#!/usr/bin/with-contenv bashio
-# shellcheck shell=bash
+#!/bin/bash
 set -e
 
-# Read configuration from Home Assistant
-COUCHDB_USER=$(bashio::config 'username')
-COUCHDB_PW=$(bashio::config 'password')
-SECRET_PATH=$(bashio::config 'secret_path')
+# Read configuration from Home Assistant options
+OPTIONS_FILE="/data/options.json"
 
-bashio::log.info "Starting LiveSync CouchDB server..."
+if [ -f "$OPTIONS_FILE" ]; then
+    COUCHDB_USER=$(jq -r '.username' "$OPTIONS_FILE")
+    COUCHDB_PW=$(jq -r '.password' "$OPTIONS_FILE")
+    SECRET_PATH=$(jq -r '.secret_path' "$OPTIONS_FILE")
+else
+    echo "Warning: No options file found, using defaults"
+    COUCHDB_USER="${COUCHDB_USER:-admin}"
+    COUCHDB_PW="${COUCHDB_PW:-}"
+    SECRET_PATH="${SECRET_PATH:-sync}"
+fi
+
+echo "Starting LiveSync CouchDB server..."
 
 # Validate password is set
 if [ -z "$COUCHDB_PW" ]; then
-    bashio::log.error "Password is not set! Please configure a password in the add-on settings."
+    echo "ERROR: Password is not set! Please configure a password in the add-on settings."
     exit 1
 fi
 
@@ -19,12 +27,8 @@ fi
 mkdir -p /data/couchdb
 chown -R couchdb:couchdb /data/couchdb
 
-# Link data directory to CouchDB location
-rm -rf /opt/couchdb/data
-ln -sf /data/couchdb /opt/couchdb/data
-
-# Generate CouchDB configuration with credentials
-bashio::log.info "Configuring CouchDB..."
+# Generate CouchDB configuration
+echo "Configuring CouchDB..."
 cat > /opt/couchdb/etc/local.d/docker.ini << EOF
 [couchdb]
 single_node=true
@@ -61,9 +65,9 @@ EOF
 
 chown couchdb:couchdb /opt/couchdb/etc/local.d/docker.ini
 
-bashio::log.info "CouchDB configured successfully"
-bashio::log.info "Access CouchDB at: https://YOUR_DOMAIN/${SECRET_PATH}/"
-bashio::log.info "Username: ${COUCHDB_USER}"
+echo "CouchDB configured successfully"
+echo "Username: ${COUCHDB_USER}"
+echo "Secret path: /${SECRET_PATH}/"
 
-# Start CouchDB as couchdb user
-exec su-exec couchdb /opt/couchdb/bin/couchdb
+# Start CouchDB using the official entrypoint
+exec /docker-entrypoint.sh couchdb

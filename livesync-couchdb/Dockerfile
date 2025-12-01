@@ -1,20 +1,11 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:15.0.8
+ARG BUILD_FROM=couchdb:3.3
 FROM ${BUILD_FROM}
 
-# Set shell
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Install CouchDB dependencies and CouchDB
-RUN apk add --no-cache \
-    couchdb=3.3.3-r0 \
-    bash \
+# Install additional tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
-    curl
-
-# Create CouchDB directories
-RUN mkdir -p /opt/couchdb/etc/local.d \
-    && mkdir -p /opt/couchdb/data \
-    && chown -R couchdb:couchdb /opt/couchdb
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy startup script
 COPY run.sh /run.sh
