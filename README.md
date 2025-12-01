@@ -23,7 +23,7 @@ CouchDB server for Obsidian LiveSync - sync your Obsidian vault across devices.
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
-![Supports armv7 Architecture][armv7-shield]
+[![License: MIT][license-shield]][license]
 
 CouchDB server optimized for Obsidian LiveSync with:
 - Configurable admin credentials
@@ -31,6 +31,19 @@ CouchDB server optimized for Obsidian LiveSync with:
 - Persistent data storage
 - CORS pre-configured for Obsidian
 
+## Credits
+
+This add-on is built for use with the excellent [Obsidian LiveSync](https://github.com/vrtmrz/obsidian-livesync) plugin by [@vrtmrz](https://github.com/vrtmrz).
+
+Related projects:
+- [Obsidian LiveSync](https://github.com/vrtmrz/obsidian-livesync) - The Obsidian plugin for real-time sync
+- [Self-hosted LiveSync Server](https://github.com/vrtmrz/self-hosted-livesync-server) - Official self-hosted server setup
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
+[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license]: LICENSE
