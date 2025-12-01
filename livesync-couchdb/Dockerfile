@@ -16,9 +16,6 @@ RUN mkdir -p /opt/couchdb/etc/local.d \
     && mkdir -p /opt/couchdb/data \
     && chown -R couchdb:couchdb /opt/couchdb
 
-# Copy root filesystem
-COPY rootfs /
-
 # Copy startup script
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh
