@@ -27,6 +27,9 @@ fi
 mkdir -p /data/couchdb
 chown -R couchdb:couchdb /data/couchdb
 
+# Create local.d directory if it doesn't exist
+mkdir -p /opt/couchdb/etc/local.d
+
 # Generate CouchDB configuration
 echo "Configuring CouchDB..."
 cat > /opt/couchdb/etc/local.d/docker.ini << EOF
