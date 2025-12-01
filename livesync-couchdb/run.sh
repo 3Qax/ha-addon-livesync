@@ -44,19 +44,21 @@ require_valid_user = true
 max_http_request_size = 4294967296
 bind_address = 0.0.0.0
 port = 5984
+enable_cors = true
 
 [chttpd_auth]
 require_valid_user = true
 authentication_redirect = /${SECRET_PATH}/_utils/session.html
 
 [httpd]
+WWW-Authenticate = Basic realm="couchdb"
 enable_cors = true
 
 [cors]
 origins = app://obsidian.md,capacitor://localhost,http://localhost
 credentials = true
 headers = accept, authorization, content-type, origin, referer
-methods = GET, PUT, POST, HEAD, DELETE
+methods = GET, PUT, POST, HEAD, DELETE, OPTIONS
 max_age = 3600
 
 [admins]

@@ -1,5 +1,5 @@
 name: "LiveSync CouchDB"
-version: "1.0.3"
+version: "1.0.4"
 slug: livesync_couchdb
 description: "CouchDB server for Obsidian LiveSync - sync your Obsidian vault across devices"
 url: "https://github.com/3Qax/ha-addon-livesync"
