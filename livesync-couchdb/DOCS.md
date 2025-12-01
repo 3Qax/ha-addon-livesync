@@ -24,8 +24,9 @@ secret_path: sync
 
 This add-on exposes CouchDB on port 5984. You need a reverse proxy (like Caddy or nginx) to:
 1. Provide HTTPS/SSL termination
-2. Handle CORS headers for Obsidian
-3. Route the secret path to CouchDB
+2. Route the secret path to CouchDB
+
+CouchDB handles CORS headers internally - no need to configure them in your reverse proxy.
 
 ### Caddy Configuration
 
@@ -33,22 +34,10 @@ Add this to your Caddyfile:
 
 ```
 livesync.yourdomain.com {
-    # Secret path - strip /sync/ prefix and forward to CouchDB
     handle_path /sync/* {
-        reverse_proxy localhost:5984 {
-            header_up Host {host}
-        }
+        reverse_proxy localhost:5984
     }
 
-    # CORS headers for Obsidian app
-    header {
-        Access-Control-Allow-Origin "app://obsidian.md"
-        Access-Control-Allow-Methods "GET, PUT, POST, HEAD, DELETE"
-        Access-Control-Allow-Headers "accept, authorization, content-type, origin, referer"
-        Access-Control-Allow-Credentials "true"
-    }
-
-    # Block root access (only /sync/ path works)
     handle {
         respond "Not Found" 404
     }
@@ -102,8 +91,9 @@ In Obsidian LiveSync settings, click "Test Connection" to verify everything work
 
 ### CORS Errors
 
-- Ensure CORS headers are set in your reverse proxy
-- The `Access-Control-Allow-Origin` must include `app://obsidian.md`
+- CouchDB handles CORS internally - don't add CORS headers in your reverse proxy
+- Ensure your reverse proxy is simply forwarding requests without modifying headers
+- Restart the add-on after any configuration changes
 
 ### Authentication Failed
 
