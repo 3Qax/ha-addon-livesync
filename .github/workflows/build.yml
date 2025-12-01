@@ -58,7 +58,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/livesync-couchdb-${{ matrix.arch }}:${{ steps.version.outputs.version }}
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/livesync-couchdb-${{ matrix.arch }}:latest
+            ghcr.io/3qax/livesync-couchdb-${{ matrix.arch }}:${{ steps.version.outputs.version }}
+            ghcr.io/3qax/livesync-couchdb-${{ matrix.arch }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
